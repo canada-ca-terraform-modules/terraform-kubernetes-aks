@@ -1,0 +1,7 @@
+prefix = "department"
+location = "Canada Central"
+public_ssh_key_path = "~/.ssh/k8s.pub"
+subscription_id = ""
+client_id       = ""
+client_secret   = ""
+tenant_id       = ""

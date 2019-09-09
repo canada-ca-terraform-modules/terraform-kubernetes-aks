@@ -1,15 +1,15 @@
 # Azure Kubernetes Service
 
-resource "azurerm_kubernetes_cluster" "aks_development" {
-  name                = "${var.prefix}-aks-development"
-  location            = "${azurerm_resource_group.rg_aks_development.location}"
-  resource_group_name = "${azurerm_resource_group.rg_aks_development.name}"
-  dns_prefix          = "${var.prefix}-aks-development"
+resource "azurerm_kubernetes_cluster" "aks" {
+  name                = "${var.prefix}-aks"
+  location            = "${azurerm_resource_group.rg_aks.location}"
+  resource_group_name = "${azurerm_resource_group.rg_aks.name}"
+  dns_prefix          = "${var.prefix}-aks"
 
-  kubernetes_version  = "1.14.3"
+  kubernetes_version  = "${var.version}"
 
   linux_profile {
-    admin_username = "azureuser"
+    admin_username = "${var.admin_username}"
 
     ssh_key {
       key_data = "${file(var.public_ssh_key_path)}"
@@ -18,12 +18,12 @@ resource "azurerm_kubernetes_cluster" "aks_development" {
 
   agent_pool_profile {
     name                  = "nodepool1"
-    count                 = 2
-    vm_size               = "Standard_D8s_v3"
+    count                 = "${var.node_count}"
+    vm_size               = "${var.node_size}"
     os_type               = "Linux"
-    os_disk_size_gb       = 200
-    max_pods              = 60
-    vnet_subnet_id        = "${azurerm_subnet.subnet_aks_development.id}"
+    os_disk_size_gb       = "${var.node_disk_size}"
+    max_pods              = "${var.node_pod_count}"
+    vnet_subnet_id        = "${azurerm_subnet.subnet_aks.id}"
     type                  = "VirtualMachineScaleSets"
     enable_auto_scaling   = false
     # min_count             = 2
@@ -38,17 +38,17 @@ resource "azurerm_kubernetes_cluster" "aks_development" {
   addon_profile {
     oms_agent {
       enabled                    = true
-      log_analytics_workspace_id = "${azurerm_log_analytics_workspace.workspace_aks_development.id}"
+      log_analytics_workspace_id = "${azurerm_log_analytics_workspace.workspace_aks.id}"
     }
   }
 
   network_profile {
-    network_plugin = "azure"
-    network_policy = "azure"
-    docker_bridge_cidr = "172.17.0.1/16"
-    dns_service_ip = "10.0.0.10"
-    service_cidr = "10.0.0.0/16"
-    load_balancer_sku   = "basic"
+    network_plugin = "${var.network_plugin}"
+    network_policy = "${var.network_policy}"
+    docker_bridge_cidr = "${var.docker_bridge_cidr}"
+    dns_service_ip = "${var.dns_service_ip}"
+    service_cidr = "${var.service_cidr}"
+    load_balancer_sku = "${var.load_balancer_sku}"
   }
 
   role_based_access_control {
@@ -62,6 +62,6 @@ resource "azurerm_kubernetes_cluster" "aks_development" {
   }
 
   tags = {
-    Environment = "Development"
+    Environment = "${var.environment}"
   }
 }

@@ -5,8 +5,8 @@ resource "azurerm_resource_group" "rg_network_development" {
   location = "${var.location}"
 }
 
-resource "azurerm_resource_group" "rg_aks_development" {
-  name     = "${var.prefix}-aks-development"
+resource "azurerm_resource_group" "rg_aks" {
+  name     = "${var.prefix}-aks"
   location = "${var.location}"
 }
 

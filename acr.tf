@@ -6,9 +6,9 @@ resource "azurerm_container_registry" "acr" {
   location                 = "${azurerm_resource_group.rg_aks_development.location}"
   sku                      = "Premium"
   admin_enabled            = false
-  georeplication_locations = ["Canada East"]
+  georeplication_locations = ["${var.georeplication_region}"]
 
   tags = {
-    Environment = "Development"
+    Environment = "${var.environment}"
   }
 }

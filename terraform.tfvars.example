@@ -1,5 +1,11 @@
 prefix = "department"
+version = "1.15.3"
 location = "Canada Central"
+georeplication_location = "Canada East"
+admin_username = "azureuser"
+node_count = 3
+node_size = "Standard_D8s_v3"
+node_pod_count = 60
 public_ssh_key_path = "~/.ssh/k8s.pub"
 subscription_id = ""
 client_id       = ""

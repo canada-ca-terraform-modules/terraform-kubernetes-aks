@@ -6,6 +6,16 @@ The overall flow for this module is pretty simple:
 * Create Azure AKS configuration in a modular manner
 * Deploy the infrastructure incrementally
 
+## Security Controls
+
+The following security controls can be met through configuration of this template:
+
+* TBD
+
+## Dependencies
+
+* None
+
 ## Pre-requisites
 
 As currently Multiple Agent Pools and Virtual Machine Scalesets are in preview you will need to run the following commands.
@@ -50,3 +60,9 @@ terraform plan -out plan
 ```sh
 terraform apply plan
 ```
+
+## History
+
+| Date     | Release    | Change      |
+| -------- | ---------- | ----------- |
+| 20190909 | 20190909.1 | 1st release |

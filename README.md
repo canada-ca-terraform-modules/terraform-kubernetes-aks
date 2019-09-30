@@ -32,33 +32,49 @@ az feature register --name MultiAgentpoolPreview --namespace Microsoft.Container
 az feature register --name VMSSPreview --namespace Microsoft.ContainerService
 ```
 
-## Init
+## Workflow
 
-Ensure you have exported the ARM access key for storage account.
+1. Create terraform.tfvars based on example template provider.
+
+2. Ensure you have exported the `ARM_ACCESS_KEY` for the Terraform backend storage account.
 
 ```sh
 export ARM_ACCESS_KEY=<secret>
 ```
 
-Set the backend config parameters for the AzureRM Terraform provider.
+3. Initialize and set the Terraform backend configuration parameters for the AzureRM provider.
 
 ```sh
 terraform init\
     -backend-config="storage_account_name=terraformkubernetes" \
     -backend-config="container_name=k8s-tfstate" \
-    -backend-config="key=aks-development.terraform.tfstate"
+    -backend-config="key=prefix-aks.terraform.tfstate"
 ```
 
-## Plan
+4. Create an execution plan and save the generated plan to a file.
 
 ```sh
 terraform plan -out plan
 ```
 
-## Apply
+5. Apply the changes required to reach desired state using the previous execution plan.
 
 ```sh
 terraform apply plan
+```
+
+6. Grant admin consent for `k8s_server_prefix` for the organization under API permissions.
+
+7. Admin level AKS credentials to assign further RBAC.
+
+```sh
+az aks get-credentials --resource-group op-aks --name op-aks --admin --overwrite-existing
+```
+
+8. Export the user level kubeconfig context
+
+```sh
+terraform output kube_config > kubeconfig
 ```
 
 ## History

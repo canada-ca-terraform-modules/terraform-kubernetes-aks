@@ -6,7 +6,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = "${azurerm_resource_group.rg_aks.name}"
   dns_prefix          = "${var.prefix}-aks"
 
-  kubernetes_version  = "${var.version}"
+  kubernetes_version  = "${var.kube_version}"
 
   linux_profile {
     admin_username = "${var.admin_username}"

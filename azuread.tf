@@ -1,7 +1,7 @@
 # Azure Active Directory Server
 
 resource "azuread_application" "server" {
-  name                    = "k8s_server"
+  name                    = "k8s_server_${var.prefix}"
   reply_urls              = ["http://k8s_server"]
   type                    = "webapp/api"
   group_membership_claims = "All"
@@ -86,7 +86,7 @@ resource "random_string" "velero_storage_account" {
 # Azure AD Client
 
 resource "azuread_application" "client" {
-  name       = "k8s_client"
+  name       = "k8s_client_${var.prefix}"
   reply_urls = ["http://k8s_client"]
   type       = "native"
 
@@ -139,7 +139,7 @@ resource "random_string" "application_client_password" {
 # Velero
 
 resource "azuread_application" "velero" {
-  name                    = "k8s_velero"
+  name                    = "k8s_velero_${var.prefix}"
   reply_urls              = ["http://k8s_velero"]
   type                    = "webapp/api"
   group_membership_claims = "All"

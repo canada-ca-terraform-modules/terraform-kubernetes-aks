@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "rg_aks" {
   location = "${var.location}"
 }
 
-resource "azurerm_resource_group" "rg_velero_development" {
-  name     = "${var.prefix}-velero-development"
+resource "azurerm_resource_group" "rg_velero" {
+  name     = "${var.prefix}-velero"
   location = "${var.location}"
 }

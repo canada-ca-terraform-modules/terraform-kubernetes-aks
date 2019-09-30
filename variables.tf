@@ -2,7 +2,7 @@ variable "prefix" {
   description = "A prefix used for all resources in this example"
 }
 
-variable "version" {
+variable "kube_version" {
   description = "Kubernetes version"
 }
 
@@ -14,7 +14,7 @@ variable "location" {
   description = "The Azure Region in which all resources in this example should be provisioned"
 }
 
-variable "georeplication_location" {
+variable "georeplication_region" {
   description = "The Azure Region to replicate georeplicated resources."
 }
 

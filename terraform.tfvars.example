@@ -1,7 +1,7 @@
 prefix = "department"
-version = "1.15.3"
+kube_version = "1.15.3"
 location = "Canada Central"
-georeplication_location = "Canada East"
+georeplication_region = "Canada East"
 admin_username = "azureuser"
 node_count = 3
 node_size = "Standard_D8s_v3"

@@ -36,6 +36,8 @@ az feature register --name VMSSPreview --namespace Microsoft.ContainerService
 
 1. Create terraform.tfvars based on example template provider.
 
+> Note: If you're authenticating using a Service Principal (client_id) then it must have permissions to both Read and write all applications and Sign in and read user profile within the Windows Azure Active Directory API. See here how to add the required permissions: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-permissions-to-access-web-apis
+
 2. Ensure you have exported the `ARM_ACCESS_KEY` for the Terraform backend storage account.
 
 ```sh

@@ -36,7 +36,7 @@ az feature register --name VMSSPreview --namespace Microsoft.ContainerService
 
 1. Create terraform.tfvars based on example template provider.
 
-> Note: If you're authenticating using a Service Principal (client_id) then it must have permissions to both Read and write all applications and Sign in and read user profile within the Windows Azure Active Directory API. See here how to add the required permissions: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-permissions-to-access-web-apis
+> Note: If you’re authenticating using a Service Principal (client_id) then it must have permissions to both Read and write all applications and Sign in and read user profile within the Windows Azure Active Directory API. See here how to add the required permissions: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-permissions-to-access-web-apis
 
 2. Ensure you have exported the `ARM_ACCESS_KEY` for the Terraform backend storage account.
 
@@ -50,7 +50,7 @@ export ARM_ACCESS_KEY=<secret>
 terraform init\
     -backend-config="storage_account_name=terraformkubernetes" \
     -backend-config="container_name=k8s-tfstate" \
-    -backend-config="key=prefix-aks.terraform.tfstate"
+    -backend-config="key=${prefix}-aks.terraform.tfstate"
 ```
 
 4. Create an execution plan and save the generated plan to a file.
@@ -59,21 +59,30 @@ terraform init\
 terraform plan -out plan
 ```
 
-5. Apply the changes required to reach desired state using the previous execution plan.
+5. Apply the changes only for the server and client applications
 
 ```sh
+terraform apply -target azuread_service_principal.server -target azuread_service_principal.client
+```
+
+> Now go on the Azure Portal and Grant admin consent manually on both applications (the `k8s_server_${prefix}`, then the `k8s_client_${prefix}`).
+
+6. Apply the remainder of changes required to reach desired state.
+
+```sh
+terraform plan -out plan
 terraform apply plan
 ```
 
-6. Grant admin consent for `k8s_server_prefix` for the organization under API permissions.
+8. KubeConfig
 
-7. Admin level AKS credentials to assign further RBAC.
+a) Admin level AKS credentials to assign further RBAC.
 
 ```sh
-az aks get-credentials --resource-group op-aks --name op-aks --admin --overwrite-existing
+az aks get-credentials --resource-group ${prefix}-aks --name ${prefix}-aks --admin --overwrite-existing
 ```
 
-8. Export the user level kubeconfig context
+b) User level kubeconfig context.
 
 ```sh
 terraform output kube_config > kubeconfig

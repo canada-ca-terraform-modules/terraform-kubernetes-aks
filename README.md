@@ -36,7 +36,17 @@ az feature register --name VMSSPreview --namespace Microsoft.ContainerService
 
 1. Create terraform.tfvars based on example template provider.
 
-> Note: If you’re authenticating using a Service Principal (client_id) then it must have permissions to both Read and write all applications and Sign in and read user profile within the Windows Azure Active Directory API. See here how to add the required permissions: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-permissions-to-access-web-apis
+Azure Active Directory Graph
+
+* Application.ReadWrite.All (Application)
+* User.Read (Delegated)
+
+Microsoft Graph
+
+* Applications.ReadWrite.OwnedBy (Application)
+* User.Read (Delegated)
+
+> Note: If you’re authenticating using a Service Principal (client_id) then it must have the appropriate permissions. See the following link on how to add the required permissions given above: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-permissions-to-access-web-apis. Additionally please don't forget to grant admin consent and add the service principal with role `Contributor` to the desired Subscription.
 
 2. Ensure you have exported the `ARM_ACCESS_KEY` for the Terraform backend storage account.
 
@@ -52,6 +62,8 @@ terraform init\
     -backend-config="container_name=k8s-tfstate" \
     -backend-config="key=${prefix}-aks.terraform.tfstate"
 ```
+
+> Note: You will have to specify your own storage account name for where to store the Terraform state. Also don't forget to create your container name which in this instance is k8s-tfstate.
 
 4. Create an execution plan and save the generated plan to a file.
 

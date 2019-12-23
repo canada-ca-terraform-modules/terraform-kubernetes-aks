@@ -83,6 +83,24 @@ resource "random_string" "velero_storage_account" {
   upper   = false
 }
 
+resource "random_string" "vault_password" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+resource "random_string" "vault_storage_account" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
+resource "random_string" "terraform_password" {
+  length  = 5
+  special = false
+  upper   = false
+}
+
 # Azure AD Client
 
 resource "azuread_application" "client" {
@@ -197,3 +215,52 @@ resource "azuread_service_principal_password" "velero" {
     ignore_changes = ["end_date"]
   }
 }
+
+# Vault
+
+resource "azuread_application" "vault" {
+  name                    = "k8s_vault_${var.prefix}"
+  reply_urls              = ["http://k8s_vault"]
+  type                    = "webapp/api"
+  group_membership_claims = "All"
+}
+
+resource "azuread_service_principal" "vault" {
+  application_id = "${azuread_application.vault.application_id}"
+}
+
+resource "azuread_service_principal_password" "vault" {
+  service_principal_id = "${azuread_service_principal.vault.id}"
+  value                = "${random_string.vault_password.result}"
+  end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+
+  # The end date will change at each run (terraform apply), causing a new password to
+  # be set. So we ignore changes on this field in the resource lifecyle to avoid this
+  # behaviour.
+  # If the desired behaviour is to change the end date, then the resource must be
+  # manually tainted.
+  lifecycle {
+    ignore_changes = ["end_date"]
+  }
+}
+
+# # Terraform Service Principal
+
+# resource "azuread_service_principal" "terraform" {
+#   application_id = "${var.client_id}"
+# }
+
+# resource "azuread_service_principal_password" "terraform" {
+#   service_principal_id = "${azuread_service_principal.terraform.id}"
+#   value                = "${random_string.terraform_password.result}"
+#   end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+
+#   # The end date will change at each run (terraform apply), causing a new password to
+#   # be set. So we ignore changes on this field in the resource lifecyle to avoid this
+#   # behaviour.
+#   # If the desired behaviour is to change the end date, then the resource must be
+#   # manually tainted.
+#   lifecycle {
+#     ignore_changes = ["end_date"]
+#   }
+# }

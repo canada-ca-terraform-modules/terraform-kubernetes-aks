@@ -2,6 +2,10 @@ variable "prefix" {
   description = "A prefix used for all resources in this example"
 }
 
+variable "short_prefix" {
+  description = "A short prefix used for all resources in this example"
+}
+
 variable "kube_version" {
   description = "Kubernetes version"
 }

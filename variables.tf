@@ -11,7 +11,7 @@ variable "kube_version" {
 }
 
 variable "environment" {
-  description = "Environment name to be used when tagging resources."
+  description = "Environment name to be used when tagging resources"
 }
 
 variable "location" {
@@ -19,12 +19,12 @@ variable "location" {
 }
 
 variable "georeplication_region" {
-  description = "The Azure Region to replicate georeplicated resources."
+  description = "The Azure Region to replicate georeplicated resources"
 }
 
 variable "admin_username" {
-  description = "Admin username for cluster nodes."
-  default = "azureuser"
+  description = "Admin username for cluster nodes"
+  default     = "azureuser"
 }
 
 variable "public_ssh_key_path" {
@@ -33,66 +33,66 @@ variable "public_ssh_key_path" {
 }
 
 variable "node_count" {
-  type = number
-  description = "Number of Kubernetes worker nodes."
-  default = 3
+  type        = number
+  description = "Number of Kubernetes worker nodes"
+  default     = 3
 }
 
 variable "node_size" {
-  description = "VM Size for each Kubernetes worker node."
-  default = "Standard_D8s_v3"
+  description = "VM Size for each Kubernetes worker node"
+  default     = "Standard_D8s_v3"
 }
 
 variable "node_disk_size" {
-  type = number
+  type        = number
   description = "Size of disk for the Kubernetes nodes (in GB)"
-  default = 200
+  default     = 200
 }
 
 variable "node_pod_count" {
-  type = number
-  description = "Number of pods per Kubernetes node."
-  default = 60
+  type        = number
+  description = "Number of pods per Kubernetes node"
+  default     = 60
 }
 
 variable "network_plugin" {
   description = "Kubernetes networking plugin"
-  default = "azure"
+  default     = "azure"
 }
 
 variable "network_policy" {
   description = "Kubernetes policy plugin"
-  default = "azure"
+  default     = "azure"
 }
 
 variable "docker_bridge_cidr" {
   description = "Docker bridge CIDR"
-  default = "172.17.0.1/16"
+  default     = "172.17.0.1/16"
 }
 
 variable "dns_service_ip" {
   description = "DNS Service IP"
-  default = "10.0.0.10"
+  default     = "10.0.0.10"
 }
 
 variable "service_cidr" {
   description = "Service CIDR"
-  default = "10.0.0.0/16"
+  default     = "10.0.0.0/16"
 }
 
 variable "vnet_cidr" {
   description = "Virtual Network CIDR"
-  default = "172.15.0.0/16"
+  default     = "172.15.0.0/16"
 }
 
 variable "subnet_cidr" {
   description = "Container Subnet CIDR"
-  default = "172.15.4.0/22"
+  default     = "172.15.4.0/22"
 }
 
 variable "load_balancer_sku" {
   description = "Load Balancer SKU"
-  default = "basic"
+  default     = "basic"
 }
 
 variable "subscription_id" {

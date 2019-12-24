@@ -6,7 +6,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = "${azurerm_resource_group.rg_aks.name}"
   dns_prefix          = "${var.prefix}-aks"
 
-  kubernetes_version  = "${var.kube_version}"
+  kubernetes_version = "${var.kube_version}"
 
   linux_profile {
     admin_username = "${var.admin_username}"
@@ -17,15 +17,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   agent_pool_profile {
-    name                  = "nodepool1"
-    count                 = "${var.node_count}"
-    vm_size               = "${var.node_size}"
-    os_type               = "Linux"
-    os_disk_size_gb       = "${var.node_disk_size}"
-    max_pods              = "${var.node_pod_count}"
-    vnet_subnet_id        = "${azurerm_subnet.subnet_aks.id}"
-    type                  = "VirtualMachineScaleSets"
-    enable_auto_scaling   = false
+    name                = "nodepool1"
+    count               = "${var.node_count}"
+    vm_size             = "${var.node_size}"
+    os_type             = "Linux"
+    os_disk_size_gb     = "${var.node_disk_size}"
+    max_pods            = "${var.node_pod_count}"
+    vnet_subnet_id      = "${azurerm_subnet.subnet_aks.id}"
+    type                = "VirtualMachineScaleSets"
+    enable_auto_scaling = false
     # min_count             = 2
     # max_count             = 50
   }
@@ -43,12 +43,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   network_profile {
-    network_plugin = "${var.network_plugin}"
-    network_policy = "${var.network_policy}"
+    network_plugin     = "${var.network_plugin}"
+    network_policy     = "${var.network_policy}"
     docker_bridge_cidr = "${var.docker_bridge_cidr}"
-    dns_service_ip = "${var.dns_service_ip}"
-    service_cidr = "${var.service_cidr}"
-    load_balancer_sku = "${var.load_balancer_sku}"
+    dns_service_ip     = "${var.dns_service_ip}"
+    service_cidr       = "${var.service_cidr}"
+    load_balancer_sku  = "${var.load_balancer_sku}"
   }
 
   role_based_access_control {

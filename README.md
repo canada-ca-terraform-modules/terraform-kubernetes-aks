@@ -16,6 +16,10 @@ The following security controls can be met through configuration of this templat
 
 * None
 
+## Optional (depending on options configured):
+
+* None
+
 ## Pre-requisites
 
 As currently Multiple Agent Pools and Virtual Machine Scalesets are in preview you will need to run the following commands.
@@ -100,8 +104,60 @@ b) User level kubeconfig context.
 terraform output kube_config > kubeconfig
 ```
 
+## Usage
+
+```terraform
+# terraform.tfvars
+
+prefix = "department"
+short_prefix = "dept"
+environment = "aks"
+kube_version = "1.15.3"
+location = "Canada Central"
+georeplication_region = "Canada East"
+admin_username = "azureuser"
+node_count = 3
+node_size = "Standard_D8s_v3"
+node_pod_count = 60
+public_ssh_key_path = "~/.ssh/k8s.pub"
+subscription_id = ""
+client_id       = ""
+client_secret   = ""
+tenant_id       = ""
+```
+
+## Variables Values
+
+| Name                  | Type   | Required | Value                                                                                    |
+| --------------------- | ------ | -------- | ---------------------------------------------------------------------------------------- |
+| prefix                | string | yes      | A prefix used for all resources in this example                                          |
+| short_prefix          | string | yes      | A short prefix used for all resources in this example                                    |
+| kube_version          | string | yes      | Kubernetes version                                                                       |
+| environment           | string | yes      | Environment name to be used when tagging resources                                       |
+| location              | string | yes      | The Azure Region in which all resources in this example should be provisioned            |
+| georeplication_region | string | yes      | The Azure Region to replicate georeplicated resources                                    |
+| admin_username        | string | yes      | Admin username for cluster nodesT                                                        |
+| public_ssh_key_path   | string | yes      | The Path at which your Public SSH Key is located. Defaults to ~/.ssh/k8s                 |
+| node_count            | number | yes      | Number of Kubernetes worker nodes                                                        |
+| node_size             | string | yes      | VM Size for each Kubernetes worker node                                                  |
+| node_disk_size        | number | yes      | Size of disk for the Kubernetes nodes (in GB)                                            |
+| node_pod_count        | number | yes      | Number of pods per Kubernetes node                                                       |
+| network_plugin        | string | yes      | Kubernetes networking plugin                                                             |
+| network_policy        | string | yes      | Kubernetes policy plugin                                                                 |
+| docker_bridge_cidr    | string | yes      | Docker bridge CIDR                                                                       |
+| dns_service_ip        | string | yes      | DNS Service IP                                                                           |
+| service_cidr          | string | yes      | Service CIDR                                                                             |
+| vnet_cidr             | string | yes      | Virtual Network CIDR                                                                     |
+| subnet_cidr           | string | yes      | Container Subnet CIDR                                                                    |
+| load_balancer_sku     | string | yes      | Load Balancer SKU                                                                        |
+| subscription_id       | string | yes      | The Subscription ID for the Service Principal to use for this Managed Kubernetes Cluster |
+| client_id             | string | yes      | The Client ID for the Service Principal to use for this Managed Kubernetes Cluster       |
+| client_secret         | string | yes      | The Client Secret for the Service Principal to use for this Managed Kubernetes Cluster   |
+| tenant_id             | string | yes      | The Tenant ID for the Service Principal to use for this Managed Kubernetes Cluster       |
+
 ## History
 
-| Date     | Release    | Change      |
-| -------- | ---------- | ----------- |
-| 20190909 | 20190909.1 | 1st release |
+| Date     | Release    | Change                                                     |
+| -------- | ---------- | ---------------------------------------------------------- |
+| 20190729 | 20190729.1 | Improvements to documentation and formatting               |
+| 20190909 | 20190909.1 | 1st release                                                |

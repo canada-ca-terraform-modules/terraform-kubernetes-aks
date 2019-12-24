@@ -136,7 +136,7 @@ tenant_id       = ""
 | environment           | string | yes      | Environment name to be used when tagging resources                                       |
 | location              | string | yes      | The Azure Region in which all resources in this example should be provisioned            |
 | georeplication_region | string | yes      | The Azure Region to replicate georeplicated resources                                    |
-| admin_username        | string | yes      | Admin username for cluster nodesT                                                        |
+| admin_username        | string | yes      | Admin username for cluster nodes                                                        |
 | public_ssh_key_path   | string | yes      | The Path at which your Public SSH Key is located. Defaults to ~/.ssh/k8s                 |
 | node_count            | number | yes      | Number of Kubernetes worker nodes                                                        |
 | node_size             | string | yes      | VM Size for each Kubernetes worker node                                                  |

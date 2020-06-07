@@ -6,6 +6,8 @@ The overall flow for this module is pretty simple:
 * Create Azure AKS configuration in a modular manner
 * Deploy the infrastructure incrementally
 
+> Note: We have also provided a GitHub actions template to be used with private repositories.
+
 ## Security Controls
 
 The following security controls can be met through configuration of this template:
@@ -16,13 +18,13 @@ The following security controls can be met through configuration of this templat
 
 * None
 
-## Optional (depending on options configured):
+## Optional (depending on options configured)
 
 * None
 
-## Pre-requisites
+## Preview Features
 
-As currently Multiple Agent Pools and Virtual Machine Scalesets are in preview you will need to run the following commands.
+Nothing used here should need preview features but in case here is the following workflow.
 
 ```sh
 # Install the aks-preview extension
@@ -31,9 +33,8 @@ az extension add --name aks-preview
 # Update the extension to make sure you have the latest version installed
 az extension update --name aks-preview
 
-# Registration
-az feature register --name MultiAgentpoolPreview --namespace Microsoft.ContainerService
-az feature register --name VMSSPreview --namespace Microsoft.ContainerService
+# Register the extension
+az feature register --name XXXXX --namespace Microsoft.ContainerService
 ```
 
 ## Workflow
@@ -108,11 +109,10 @@ terraform output kube_config > kubeconfig
 
 ```terraform
 # terraform.tfvars
-
 prefix = "department"
 short_prefix = "dept"
 environment = "aks"
-kube_version = "1.15.3"
+kube_version = "1.15.10"
 location = "Canada Central"
 georeplication_region = "Canada East"
 admin_username = "azureuser"
@@ -121,8 +121,6 @@ node_size = "Standard_D8s_v3"
 node_pod_count = 60
 public_ssh_key_path = "~/.ssh/k8s.pub"
 subscription_id = ""
-client_id       = ""
-client_secret   = ""
 tenant_id       = ""
 ```
 
@@ -151,13 +149,11 @@ tenant_id       = ""
 | subnet_cidr           | string | yes      | Container Subnet CIDR                                                                    |
 | load_balancer_sku     | string | yes      | Load Balancer SKU                                                                        |
 | subscription_id       | string | yes      | The Subscription ID for the Service Principal to use for this Managed Kubernetes Cluster |
-| client_id             | string | yes      | The Client ID for the Service Principal to use for this Managed Kubernetes Cluster       |
-| client_secret         | string | yes      | The Client Secret for the Service Principal to use for this Managed Kubernetes Cluster   |
 | tenant_id             | string | yes      | The Tenant ID for the Service Principal to use for this Managed Kubernetes Cluster       |
 
 ## History
 
 | Date     | Release    | Change                                                     |
 | -------- | ---------- | ---------------------------------------------------------- |
-| 20190729 | 20190729.1 | Improvements to documentation and formatting               |
-| 20190909 | 20190909.1 | 1st release                                                |
+| 20190729 | 20190729.1 | Initial release                                            |
+| 20200606 | 20200606.1 | Updates to the AKS Cluster spec                            |

@@ -1,7 +1,7 @@
 # Key Vault
 
 resource "azurerm_key_vault" "vault" {
-  name                        = "${var.prefix}-vault"
+  name                        = "${var.short_prefix}-vault"
   location                    = "${azurerm_resource_group.rg_vault.location}"
   resource_group_name         = "${azurerm_resource_group.rg_vault.name}"
   enabled_for_disk_encryption = true
@@ -11,7 +11,7 @@ resource "azurerm_key_vault" "vault" {
 
   access_policy {
     tenant_id = "${var.tenant_id}"
-    object_id = "${azuread_service_principal.vault.object_id}"
+    object_id = "${azurerm_user_assigned_identity.vault.principal_id}"
 
     key_permissions = [
       "get",
@@ -34,7 +34,7 @@ resource "azurerm_key_vault" "vault" {
 
   access_policy {
     tenant_id = "${var.tenant_id}"
-    object_id = "75f15eed-0cd6-47cf-9725-2ef206025738"
+    object_id = "${data.azurerm_client_config.current.service_principal_object_id}"
 
     key_permissions = [
       "get",

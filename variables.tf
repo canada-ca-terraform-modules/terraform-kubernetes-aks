@@ -87,7 +87,7 @@ variable "vnet_cidr" {
 
 variable "subnet_cidr" {
   description = "Container Subnet CIDR"
-  default     = "172.15.4.0/22"
+  default     = "172.15.0.0/16"
 }
 
 variable "load_balancer_sku" {
@@ -97,14 +97,6 @@ variable "load_balancer_sku" {
 
 variable "subscription_id" {
   description = "The Subscription ID for the Service Principal to use for this Managed Kubernetes Cluster"
-}
-
-variable "client_id" {
-  description = "The Client ID for the Service Principal to use for this Managed Kubernetes Cluster"
-}
-
-variable "client_secret" {
-  description = "The Client Secret for the Service Principal to use for this Managed Kubernetes Cluster"
 }
 
 variable "tenant_id" {

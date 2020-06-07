@@ -16,18 +16,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
 
-  agent_pool_profile {
+  default_node_pool {
     name                = "nodepool1"
-    count               = "${var.node_count}"
+    node_count          = "${var.node_count}"
     vm_size             = "${var.node_size}"
     os_type             = "Linux"
     os_disk_size_gb     = "${var.node_disk_size}"
     max_pods            = "${var.node_pod_count}"
     vnet_subnet_id      = "${azurerm_subnet.subnet_aks.id}"
     type                = "VirtualMachineScaleSets"
-    enable_auto_scaling = false
-    # min_count             = 2
-    # max_count             = 50
+    enable_auto_scaling = true
+    min_count           = 1
+    max_count           = 3
   }
 
   service_principal {
@@ -36,6 +36,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   addon_profile {
+    azure_policy {
+      enabled = false
+    }
+
     oms_agent {
       enabled                    = true
       log_analytics_workspace_id = "${azurerm_log_analytics_workspace.workspace_aks.id}"
@@ -63,5 +67,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   tags = {
     Environment = "${var.environment}"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # Since autoscaling is enabled, let's ignore changes to the node count.
+      default_node_pool[0].node_count,
+    ]
   }
 }

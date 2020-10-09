@@ -220,9 +220,28 @@ resource "azuread_service_principal_password" "velero" {
 
 resource "azuread_application" "vault" {
   name                    = "k8s_vault_${var.prefix}"
-  reply_urls              = ["http://k8s_vault"]
+  homepage                = "https://vault.example.ca"
+  # reply_urls              = ["https://vault.example.ca/ui/vault/auth/oidc/oidc/callback", "http://localhost:8250/oidc/callback"]
   type                    = "webapp/api"
   group_membership_claims = "All"
+
+  required_resource_access {
+    # Windows Azure Active Directory API
+    resource_app_id = "00000002-0000-0000-c000-000000000000"
+
+    resource_access {
+      # DELEGATED PERMISSIONS: "Read all groups":
+      id   = "6234d376-f627-4f0f-90e0-dff25c5211a3"
+      type = "Scope"
+    }
+  }
+}
+
+resource "azurerm_user_assigned_identity" "vault" {
+  resource_group_name = "${azurerm_resource_group.rg_vault.name}"
+  location            = "${azurerm_resource_group.rg_vault.location}"
+
+  name = "vault"
 }
 
 resource "azuread_service_principal" "vault" {

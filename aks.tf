@@ -1,4 +1,9 @@
 # Azure Kubernetes Service
+resource "random_password" "windows_password" {
+  length           = 16
+  special          = true
+  override_special = "_%@$"
+}
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.prefix}-aks"
@@ -16,11 +21,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
 
+  windows_profile {
+    admin_username = "azureuser"
+    admin_password = random_password.windows_password.result
+  }
+
   default_node_pool {
     name                = "nodepool1"
     node_count          = "${var.node_count}"
     vm_size             = "${var.node_size}"
-    os_type             = "Linux"
     os_disk_size_gb     = "${var.node_disk_size}"
     max_pods            = "${var.node_pod_count}"
     vnet_subnet_id      = "${azurerm_subnet.subnet_aks.id}"
@@ -40,8 +49,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
       enabled = false
     }
 
+    kube_dashboard {
+      enabled = false
+    }
+
     oms_agent {
-      enabled                    = true
+      enabled                    = false
       log_analytics_workspace_id = "${azurerm_log_analytics_workspace.workspace_aks.id}"
     }
   }

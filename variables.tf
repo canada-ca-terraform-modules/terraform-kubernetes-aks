@@ -87,7 +87,7 @@ variable "vnet_cidr" {
 
 variable "subnet_cidr" {
   description = "Container Subnet CIDR"
-  default     = "172.15.0.0/16"
+  default     = "172.15.4.0/22"
 }
 
 variable "load_balancer_sku" {
@@ -101,4 +101,15 @@ variable "subscription_id" {
 
 variable "tenant_id" {
   description = "The Tenant ID for the Service Principal to use for this Managed Kubernetes Cluster"
+}
+
+variable "gpu_node_size" {
+  description = "GPU VM Size for each Kubernetes worker node."
+  default     = "Standard_NC6s_v3"
+}
+
+variable "gpu_node_count" {
+  type        = number
+  description = "Number of GPU nodepool per Kubernetes cluster."
+  default     = 1
 }

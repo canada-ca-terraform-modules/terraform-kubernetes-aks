@@ -5,8 +5,6 @@ provider "azuread" {
 }
 
 provider "azurerm" {
-  version = "=1.44.0"
-
-  subscription_id            = "${var.subscription_id}"
-  skip_provider_registration = true
+  version         = "=1.44.0"
+  subscription_id = "${var.subscription_id}"
 }

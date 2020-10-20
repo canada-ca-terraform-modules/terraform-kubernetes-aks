@@ -128,3 +128,4 @@ tenant_id       = ""
 | -------- | ---------- | ---------------------------------------------------------- |
 | 20190729 | 20190729.1 | Initial release                                            |
 | 20200606 | 20200606.1 | Updates to the AKS Cluster spec                            |
+| 20201020 | 20201020.1 | Updates to the AKS Cluster spec                            |

@@ -3,7 +3,7 @@ variable "prefix" {
 }
 
 variable "short_prefix" {
-  description = "A short prefix used for all resources in this example"
+  description = "A shorter prefix used for some resources in this example"
 }
 
 variable "kube_version" {
@@ -11,7 +11,7 @@ variable "kube_version" {
 }
 
 variable "environment" {
-  description = "Environment name to be used when tagging resources"
+  description = "Environment name to be used when tagging resources."
 }
 
 variable "location" {
@@ -19,11 +19,11 @@ variable "location" {
 }
 
 variable "georeplication_region" {
-  description = "The Azure Region to replicate georeplicated resources"
+  description = "The Azure Region to replicate georeplicated resources."
 }
 
 variable "admin_username" {
-  description = "Admin username for cluster nodes"
+  description = "Admin username for cluster nodes."
   default     = "azureuser"
 }
 
@@ -34,13 +34,18 @@ variable "public_ssh_key_path" {
 
 variable "node_count" {
   type        = number
-  description = "Number of Kubernetes worker nodes"
+  description = "Number of Kubernetes worker nodes."
   default     = 3
 }
 
 variable "node_size" {
-  description = "VM Size for each Kubernetes worker node"
+  description = "VM Size for each Kubernetes worker node."
   default     = "Standard_D8s_v3"
+}
+
+variable "gpu_node_size" {
+  description = "GPU VM Size for each Kubernetes worker node."
+  default     = "Standard_NC6s_v3"
 }
 
 variable "node_disk_size" {
@@ -51,8 +56,14 @@ variable "node_disk_size" {
 
 variable "node_pod_count" {
   type        = number
-  description = "Number of pods per Kubernetes node"
+  description = "Number of pods per Kubernetes node."
   default     = 60
+}
+
+variable "gpu_node_count" {
+  type        = number
+  description = "Number of GPU nodepool per Kubernetes cluster."
+  default     = 2
 }
 
 variable "network_plugin" {
@@ -92,24 +103,26 @@ variable "subnet_cidr" {
 
 variable "load_balancer_sku" {
   description = "Load Balancer SKU"
-  default     = "basic"
+  default     = "Basic"
+}
+
+variable "load_balancer_outbound_ips" {
+  description = "Load Balancer outbound ips"
+  default     = []
 }
 
 variable "subscription_id" {
   description = "The Subscription ID for the Service Principal to use for this Managed Kubernetes Cluster"
 }
 
+variable "client_id" {
+  description = "The Client ID for the Service Principal to use for this Managed Kubernetes Cluster"
+}
+
+variable "client_secret" {
+  description = "The Client Secret for the Service Principal to use for this Managed Kubernetes Cluster"
+}
+
 variable "tenant_id" {
   description = "The Tenant ID for the Service Principal to use for this Managed Kubernetes Cluster"
-}
-
-variable "gpu_node_size" {
-  description = "GPU VM Size for each Kubernetes worker node."
-  default     = "Standard_NC6s_v3"
-}
-
-variable "gpu_node_count" {
-  type        = number
-  description = "Number of GPU nodepool per Kubernetes cluster."
-  default     = 1
 }

@@ -6,7 +6,7 @@ resource "random_password" "windows_password" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.prefix}-aks"
+  name                = "${var.short_prefix}-aks"
   location            = "${azurerm_resource_group.rg_aks.location}"
   resource_group_name = "${azurerm_resource_group.rg_aks.name}"
   dns_prefix          = "${var.prefix}-aks"
@@ -27,16 +27,17 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   default_node_pool {
-    name                = "nodepool1"
-    node_count          = "${var.node_count}"
-    vm_size             = "${var.node_size}"
-    os_disk_size_gb     = "${var.node_disk_size}"
-    max_pods            = "${var.node_pod_count}"
-    vnet_subnet_id      = "${azurerm_subnet.subnet_aks.id}"
-    type                = "VirtualMachineScaleSets"
-    enable_auto_scaling = true
-    min_count           = 1
-    max_count           = 3
+    name                 = "nodepool1"
+    orchestrator_version = var.kube_version
+    node_count           = "${var.node_count}"
+    vm_size              = "${var.node_size}"
+    os_disk_size_gb      = "${var.node_disk_size}"
+    max_pods             = "${var.node_pod_count}"
+    vnet_subnet_id       = "${azurerm_subnet.subnet_aks.id}"
+    type                 = "VirtualMachineScaleSets"
+    enable_auto_scaling  = true
+    min_count            = 1
+    max_count            = 3
   }
 
   service_principal {
@@ -66,7 +67,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip     = "${var.dns_service_ip}"
     service_cidr       = "${var.service_cidr}"
     load_balancer_sku  = "${var.load_balancer_sku}"
+
+    # load_balancer_profile {
+    #   outbound_ip_address_ids = var.load_balancer_outbound_ips
+    # }
   }
+
+  # Enable private link
+  # private_cluster_enabled = true
 
   role_based_access_control {
     enabled = true

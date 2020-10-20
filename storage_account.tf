@@ -1,11 +1,11 @@
 # Storage Accounts
 
 resource "azurerm_storage_account" "sa_vault" {
-  name                     = "${var.short_prefix}vault${random_string.vault_storage_account.result}"
+  name                     = "${replace(var.short_prefix, "-", "")}vault"
   location                 = "${azurerm_resource_group.rg_vault.location}"
   resource_group_name      = "${azurerm_resource_group.rg_vault.name}"
   account_tier             = "Standard"
-  account_kind             = "BlobStorage"
+  account_kind             = "StorageV2"
   account_replication_type = "LRS"
   # enable_blob_encryption = "True"
   # enable_file_encryption = "True"
@@ -20,11 +20,11 @@ resource "azurerm_storage_container" "sc_vault" {
 }
 
 resource "azurerm_storage_account" "sa_velero" {
-  name                     = "${var.short_prefix}velero${random_string.velero_storage_account.result}"
+  name                     = "${replace(var.short_prefix, "-", "")}velero"
   location                 = "${azurerm_resource_group.rg_velero.location}"
   resource_group_name      = "${azurerm_resource_group.rg_velero.name}"
   account_tier             = "Standard"
-  account_kind             = "BlobStorage"
+  account_kind             = "StorageV2"
   account_replication_type = "LRS"
   # enable_blob_encryption = "True"
   # enable_file_encryption = "True"

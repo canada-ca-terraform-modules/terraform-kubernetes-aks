@@ -11,3 +11,5 @@ node_pod_count = 60
 public_ssh_key_path = "~/.ssh/k8s.pub"
 subscription_id = ""
 tenant_id       = ""
+load_balancer_sku           = "Standard"
+load_balancer_outbound_ips  = [ "/subscriptions/XXXXX/resourceGroups/XXXXX/providers/Microsoft.Network/publicIPAddresses/XXXXX" ]

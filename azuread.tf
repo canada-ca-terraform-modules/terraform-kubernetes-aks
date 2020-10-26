@@ -42,13 +42,13 @@ resource "azuread_application" "server" {
 }
 
 resource "azuread_service_principal" "server" {
-  application_id = "${azuread_application.server.application_id}"
+  application_id = azuread_application.server.application_id
 }
 
 resource "azuread_service_principal_password" "server" {
-  service_principal_id = "${azuread_service_principal.server.id}"
-  value                = "${random_string.application_server_password.result}"
-  end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+  service_principal_id = azuread_service_principal.server.id
+  value                = random_string.application_server_password.result
+  end_date             = timeadd(timestamp(), "87600h") # 10 years
 
   # The end date will change at each run (terraform apply), causing a new password to
   # be set. So we ignore changes on this field in the resource lifecyle to avoid this
@@ -56,7 +56,7 @@ resource "azuread_service_principal_password" "server" {
   # If the desired behaviour is to change the end date, then the resource must be
   # manually tainted.
   lifecycle {
-    ignore_changes = ["end_date"]
+    ignore_changes = [end_date]
   }
 }
 
@@ -67,7 +67,7 @@ resource "random_string" "application_server_password" {
   special = true
 
   keepers = {
-    service_principal = "${azuread_service_principal.server.id}"
+    service_principal = azuread_service_principal.server.id
   }
 }
 
@@ -121,27 +121,27 @@ resource "azuread_application" "client" {
 
   required_resource_access {
     # AKS ad application server
-    resource_app_id = "${azuread_application.server.application_id}"
+    resource_app_id = azuread_application.server.application_id
 
     resource_access {
       # Server app Oauth2 permissions id
-      id   = "${lookup(azuread_application.server.oauth2_permissions[0], "id")}"
+      id   = lookup(azuread_application.server.oauth2_permissions[0], "id")
       type = "Scope"
     }
   }
 }
 
 resource "azuread_service_principal" "client" {
-  application_id = "${azuread_application.client.application_id}"
+  application_id = azuread_application.client.application_id
 }
 
 resource "azuread_service_principal_password" "client" {
-  service_principal_id = "${azuread_service_principal.client.id}"
-  value                = "${random_string.application_client_password.result}"
-  end_date             = "${timeadd(timestamp(), "87600h")}"
+  service_principal_id = azuread_service_principal.client.id
+  value                = random_string.application_client_password.result
+  end_date             = timeadd(timestamp(), "87600h")
 
   lifecycle {
-    ignore_changes = ["end_date"]
+    ignore_changes = [end_date]
   }
 }
 
@@ -150,7 +150,7 @@ resource "random_string" "application_client_password" {
   special = true
 
   keepers = {
-    service_principal = "${azuread_service_principal.client.id}"
+    service_principal = azuread_service_principal.client.id
   }
 }
 
@@ -198,13 +198,13 @@ resource "azuread_application" "velero" {
 }
 
 resource "azuread_service_principal" "velero" {
-  application_id = "${azuread_application.velero.application_id}"
+  application_id = azuread_application.velero.application_id
 }
 
 resource "azuread_service_principal_password" "velero" {
-  service_principal_id = "${azuread_service_principal.velero.id}"
-  value                = "${random_string.velero_password.result}"
-  end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+  service_principal_id = azuread_service_principal.velero.id
+  value                = random_string.velero_password.result
+  end_date             = timeadd(timestamp(), "87600h") # 10 years
 
   # The end date will change at each run (terraform apply), causing a new password to
   # be set. So we ignore changes on this field in the resource lifecyle to avoid this
@@ -212,16 +212,16 @@ resource "azuread_service_principal_password" "velero" {
   # If the desired behaviour is to change the end date, then the resource must be
   # manually tainted.
   lifecycle {
-    ignore_changes = ["end_date"]
+    ignore_changes = [end_date]
   }
 }
 
 # Vault
 
 resource "azuread_application" "vault" {
-  name                    = "k8s_vault_${var.prefix}"
-  homepage                = "https://vault.example.ca"
-  # reply_urls              = ["https://vault.example.ca/ui/vault/auth/oidc/oidc/callback", "http://localhost:8250/oidc/callback"]
+  name     = "k8s_vault_${var.prefix}"
+  homepage = "https://vault.govcloud.ca"
+  # reply_urls              = ["https://vault.govcloud.ca/ui/vault/auth/oidc/oidc/callback", "http://localhost:8250/oidc/callback"]
   type                    = "webapp/api"
   group_membership_claims = "All"
 
@@ -238,20 +238,20 @@ resource "azuread_application" "vault" {
 }
 
 resource "azurerm_user_assigned_identity" "vault" {
-  resource_group_name = "${azurerm_resource_group.rg_vault.name}"
-  location            = "${azurerm_resource_group.rg_vault.location}"
+  resource_group_name = azurerm_resource_group.rg_aks.name
+  location            = azurerm_resource_group.rg_aks.location
 
   name = "vault"
 }
 
 resource "azuread_service_principal" "vault" {
-  application_id = "${azuread_application.vault.application_id}"
+  application_id = azuread_application.vault.application_id
 }
 
 resource "azuread_service_principal_password" "vault" {
-  service_principal_id = "${azuread_service_principal.vault.id}"
-  value                = "${random_string.vault_password.result}"
-  end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+  service_principal_id = azuread_service_principal.vault.id
+  value                = random_string.vault_password.result
+  end_date             = timeadd(timestamp(), "87600h") # 10 years
 
   # The end date will change at each run (terraform apply), causing a new password to
   # be set. So we ignore changes on this field in the resource lifecyle to avoid this
@@ -259,20 +259,20 @@ resource "azuread_service_principal_password" "vault" {
   # If the desired behaviour is to change the end date, then the resource must be
   # manually tainted.
   lifecycle {
-    ignore_changes = ["end_date"]
+    ignore_changes = [end_date]
   }
 }
 
 # # Terraform Service Principal
 
 # resource "azuread_service_principal" "terraform" {
-#   application_id = "${var.client_id}"
+#   application_id = var.client_id
 # }
 
 # resource "azuread_service_principal_password" "terraform" {
-#   service_principal_id = "${azuread_service_principal.terraform.id}"
-#   value                = "${random_string.terraform_password.result}"
-#   end_date             = "${timeadd(timestamp(), "87600h")}" # 10 years
+#   service_principal_id = azuread_service_principal.terraform.id
+#   value                = random_string.terraform_password.result
+#   end_date             = timeadd(timestamp(), "87600h") # 10 years
 
 #   # The end date will change at each run (terraform apply), causing a new password to
 #   # be set. So we ignore changes on this field in the resource lifecyle to avoid this
@@ -280,6 +280,6 @@ resource "azuread_service_principal_password" "vault" {
 #   # If the desired behaviour is to change the end date, then the resource must be
 #   # manually tainted.
 #   lifecycle {
-#     ignore_changes = ["end_date"]
+#     ignore_changes = [end_date]
 #   }
 # }

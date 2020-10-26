@@ -43,11 +43,6 @@ variable "node_size" {
   default     = "Standard_D8s_v3"
 }
 
-variable "gpu_node_size" {
-  description = "GPU VM Size for each Kubernetes worker node."
-  default     = "Standard_NC6s_v3"
-}
-
 variable "node_disk_size" {
   type        = number
   description = "Size of disk for the Kubernetes nodes (in GB)"
@@ -58,6 +53,11 @@ variable "node_pod_count" {
   type        = number
   description = "Number of pods per Kubernetes node."
   default     = 60
+}
+
+variable "gpu_node_size" {
+  description = "GPU VM Size for each Kubernetes worker node."
+  default     = "Standard_NC6s_v3"
 }
 
 variable "gpu_node_count" {
@@ -113,14 +113,6 @@ variable "load_balancer_outbound_ips" {
 
 variable "subscription_id" {
   description = "The Subscription ID for the Service Principal to use for this Managed Kubernetes Cluster"
-}
-
-variable "client_id" {
-  description = "The Client ID for the Service Principal to use for this Managed Kubernetes Cluster"
-}
-
-variable "client_secret" {
-  description = "The Client Secret for the Service Principal to use for this Managed Kubernetes Cluster"
 }
 
 variable "tenant_id" {

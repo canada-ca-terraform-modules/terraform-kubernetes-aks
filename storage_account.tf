@@ -2,8 +2,8 @@
 
 resource "azurerm_storage_account" "sa_vault" {
   name                     = "${replace(var.short_prefix, "-", "")}vault"
-  location                 = "${azurerm_resource_group.rg_vault.location}"
-  resource_group_name      = "${azurerm_resource_group.rg_vault.name}"
+  location                 = azurerm_resource_group.rg_aks.location
+  resource_group_name      = azurerm_resource_group.rg_aks.name
   account_tier             = "Standard"
   account_kind             = "StorageV2"
   account_replication_type = "LRS"
@@ -15,14 +15,14 @@ resource "azurerm_storage_account" "sa_vault" {
 
 resource "azurerm_storage_container" "sc_vault" {
   name                  = "vault"
-  storage_account_name  = "${azurerm_storage_account.sa_vault.name}"
+  storage_account_name  = azurerm_storage_account.sa_vault.name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_account" "sa_velero" {
   name                     = "${replace(var.short_prefix, "-", "")}velero"
-  location                 = "${azurerm_resource_group.rg_velero.location}"
-  resource_group_name      = "${azurerm_resource_group.rg_velero.name}"
+  location                 = azurerm_resource_group.rg_aks.location
+  resource_group_name      = azurerm_resource_group.rg_aks.name
   account_tier             = "Standard"
   account_kind             = "StorageV2"
   account_replication_type = "LRS"
@@ -34,6 +34,6 @@ resource "azurerm_storage_account" "sa_velero" {
 
 resource "azurerm_storage_container" "sc_velero" {
   name                  = "velero"
-  storage_account_name  = "${azurerm_storage_account.sa_velero.name}"
+  storage_account_name  = azurerm_storage_account.sa_velero.name
   container_access_type = "private"
 }

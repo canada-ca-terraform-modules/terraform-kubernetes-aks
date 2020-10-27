@@ -1,5 +1,9 @@
 # Terraform for Azure Kubernetes Service
 
+<p align="center">
+  <img alt="Example Architectural Diagram" src="https://govcloud.blob.core.windows.net/docs/cicd.jpg" width="725">
+</p>
+
 The overall flow for this module is pretty simple:
 
 * Create Azure storage account to store Terraform state

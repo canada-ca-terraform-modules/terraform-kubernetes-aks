@@ -263,6 +263,27 @@ resource "azuread_service_principal_password" "vault" {
   }
 }
 
+resource "azurerm_role_assignment" "cluster_vault_msi_operator" {
+  name                 = "23233948-a906-4dc4-8a01-0e3475ca5198"
+  scope                = azurerm_user_assigned_identity.vault.id
+  role_definition_name = "Managed Identity Operator"
+  principal_id         = azuread_service_principal.client.id
+}
+
+resource "azurerm_role_assignment" "cluster_velero_sa_contributor" {
+  name                 = "52fbdccc-7534-4cdb-ab28-955edbac57ad"
+  scope                = azurerm_storage_account.sa_velero.id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = azuread_service_principal.velero.id
+}
+
+resource "azurerm_role_assignment" "cluster_vnet_network_contributor" {
+  name                 = "dbd7ca37-f6f6-4f1c-b484-5831c5c1413a"
+  scope                = azurerm_virtual_network.vnet_aks.id
+  role_definition_name = "Network Contributor"
+  principal_id         = azuread_service_principal.client.id
+}
+
 # # Terraform Service Principal
 
 # resource "azuread_service_principal" "terraform" {
